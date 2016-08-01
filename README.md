@@ -85,3 +85,23 @@ delete
 SELECT pg_drop_replication_slot('my_slot');
 ```
 (tbc)
+#####Chapter 3. Understanding Point-in-time Recovery
+```
+pg_basebackup
+```
+######Understanding the purpose of PITR
+every time one of those segments is filled up and ready,postgres will call the ```archive_command```.  
+transport XLOG file from database to an archive  
+  
+all xlog files must be present because postgres needs an uninterrupted sequence of xlog files.
+######Archiving the transaction log
+in postgresql.conf
+```
+wal_level = archive
+archive_mode = on
+archive_command = 'cp %p /archive/%f'
+```
+check
+```
+cd /var/lib/postgresql/9.5/main/pg_xlog/status
+```
