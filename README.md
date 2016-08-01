@@ -105,3 +105,32 @@ check
 ```
 cd /var/lib/postgresql/9.5/main/pg_xlog/status
 ```
+######Taking base backups
+first in pg_hba,enable replication
+```
+host  replication  all     127.0.0.1/32      md5
+```
+then
+```
+pg_basebackup
+```
+update config. we dont need to restart postgres
+```
+select pg_reload_conf();
+```
+or
+```
+kill -hup 1234
+```
+we want to create a base backup that can live without XLOG? use
+```
+--xlog-method=stream
+```
+throttle
+```
+--max-rate
+```
+#####Chapter 14. Scaling with BDR
+######Understanding BDR
+evenual consistency  
+if no new updates are made to a given data item, eventually all accesses to that item will return the last updated value.
